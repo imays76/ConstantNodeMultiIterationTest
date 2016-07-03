@@ -17,7 +17,7 @@ int NodeMultiIterationCount = 10;
 
 Node* m_first;
 
-void ConstantNodeMultiJump(int NodeMultiIterationCount, Node* iter)
+Node* ConstantNodeMultiJump(int NodeMultiIterationCount, Node* iter)
 {
 	assert(0 <= NodeMultiIterationCount);
 	assert(NodeMultiIterationCount <= 10);
@@ -36,12 +36,15 @@ void ConstantNodeMultiJump(int NodeMultiIterationCount, Node* iter)
 	case 9: iter = iter->m_next->m_next->m_next->m_next->m_next->m_next->m_next->m_next->m_next; break;
 	case 10: iter = iter->m_next->m_next->m_next->m_next->m_next->m_next->m_next->m_next->m_next->m_next; break;
 	}
+	return iter;
 }
 
-void NodeMultiJump(int NodeMultiIterationCount, Node* iter)
+Node* NodeMultiJump(int NodeMultiIterationCount, Node* iter)
 {
 	for (int i = 0; i < NodeMultiIterationCount; i++)
 		iter = iter->m_next;
+
+	return iter;
 }
 
 int main()
@@ -63,7 +66,7 @@ int main()
 		Node* iter = m_first;
 		for (int i = 0; i < JumpCount; i++)
 		{
-			NodeMultiJump(NodeMultiIterationCount, /*ref*/ iter);
+			iter = NodeMultiJump(NodeMultiIterationCount, iter);
 		}
 		auto time1 = high_resolution_clock::now();
 		cout << "..took " << duration_cast<milliseconds>(time1 - time0).count() << "ms.\n";
@@ -78,7 +81,7 @@ int main()
 		
 		for (int i = 0; i < JumpCount; i++)
 		{
-			ConstantNodeMultiJump(NodeMultiIterationCount, /*ref*/ iter);
+			iter = ConstantNodeMultiJump(NodeMultiIterationCount, iter);
 		}
 
 		auto time1 = high_resolution_clock::now();
